@@ -1,25 +1,19 @@
-from PyQt6.QtWidgets import QApplication, QWidget
+from tkinter import *
+import tkinter as tk
 
 
-def main():
-    # Only needed for access to command line arguments
-    import sys
+root = Tk()
 
-    # You need one (and only one) QApplication instance per application.
-    # Pass in sys.argv to allow command line arguments for your app.
-    # If you know you won't use command line arguments QApplication([]) works too.
-    app = QApplication(sys.argv)
+root.geometry("700x350")
 
-    # Create a Qt widget, which will be our window.
-    window = QWidget()
-    window.show()  # IMPORTANT!!!!! Windows are hidden by default.
+root.config(bg='#add123')
 
-    # Start the event loop.
-    app.exec()
+root.wm_attributes('-transparentcolor', '#add123')
+root.wm_attributes('-fullscreen', 'True')
 
-    # Your application won't reach here until you exit and the event
-    # loop has stopped.
+label = tk.Label(root, text="Hello, This is a TEST")
+label.pack()
+root.mainloop()
 
 
-if __name__ == '__main__':
-    main()
+
