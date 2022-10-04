@@ -4,7 +4,6 @@ import tkinter as tk
 
 root = Tk()
 
-root.geometry("700x350")
 
 root.config(bg='#add123')
 
