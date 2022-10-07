@@ -34,12 +34,12 @@ def main():
         for key in process_dict:
             if key not in current_iteration_dict:
                 print("Process removed: ", process_dict[key].process_id, ":::", process_dict[key].process_cpu, ":::",
-                      process_dict[key].process_memory, ":::", process_dict[key].process_priority, ":::")
+                      process_dict[key].process_memory, ":::", process_dict[key].process_priority)
 
         for key in current_iteration_dict:
             if key not in process_dict:
-                print("Process added: ", process_dict[key].process_id, ":::", process_dict[key].process_cpu, ":::",
-                      process_dict[key].process_memory, ":::", process_dict[key].process_priority, ":::")
+                print("Process added: ", current_iteration_dict[key].process_id, ":::", current_iteration_dict[key].process_cpu, ":::",
+                      current_iteration_dict[key].process_memory, ":::", current_iteration_dict[key].process_priority)
 
         process_dict = current_iteration_dict
 
