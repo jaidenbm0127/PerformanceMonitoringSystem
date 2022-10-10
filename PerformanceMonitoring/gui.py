@@ -11,7 +11,7 @@ screen.create_rectangle(0, 0, 400, 800, fill='black')
 screen.master.wm_attributes("-alpha", 0.4)
 
 screen.create_text(200,150,fill="white",font="Times 15  bold",
-text="Click the bubbles that are multiples of two.") #option 1 -- less text with black background
+text="This is a tesst") #option 1 -- less text with black background
 #
 # text = Text(screen, width=25, height=40)  # The best way to adjust the canvas screen space
 # text.pack()
