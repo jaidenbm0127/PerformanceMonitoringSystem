@@ -12,8 +12,8 @@ screen.master.geometry("+950+0")
 screen.master.lift()
 screen.master.wm_attributes("-topmost", True)
 screen.master.wm_attributes("-disabled", True)
-screen.create_rectangle(0, 0, 400, 600, fill='black')
-screen.master.wm_attributes("-alpha", 0.8)
+#screen.master.wm_attributes("-alpha", 0.8)
+screen.master.wm_attributes('-transparentcolor', 'white')
 
 
 text = Text(screen, width=25, height=40)  # The best way to adjust the canvas screen space
