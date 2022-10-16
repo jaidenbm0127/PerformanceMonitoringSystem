@@ -3,6 +3,7 @@ from tkinter import *
 from prompt_toolkit.key_binding import KeyBindings
 from pynput import keyboard
 
+
 screen = tkinter.Canvas(width=400, height=600, highlightthickness=0)
 screen.master.overrideredirect(True)
 #moving screen to right side of screen
@@ -12,14 +13,17 @@ screen.master.lift()
 screen.master.wm_attributes("-topmost", True)
 screen.master.wm_attributes("-disabled", True)
 screen.create_rectangle(0, 0, 400, 600, fill='black')
-screen.master.wm_attributes("-alpha", 0.4)
+screen.master.wm_attributes("-alpha", 0.5)
 
-bindings = KeyBindings()
+
 text = Text(screen, width=25, height=40)  # The best way to adjust the canvas screen space
-text.insert('1.0', 'This is a test ')
+text.insert('1.0', 'test')
 font_tuple = ("Times new roman", 20, "bold")  # Can adjust the font configuration
 text.configure(font=font_tuple)
 text.pack()
 
+
 screen.pack()
 screen.mainloop()
+
+
