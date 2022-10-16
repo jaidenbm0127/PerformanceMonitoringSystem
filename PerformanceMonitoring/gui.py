@@ -39,8 +39,20 @@ def quit(event): #quits the program
     screen.master.quit() #quits the program
 
 
+def hide_screen(event): #hides the program
+    print("you pressed control s")
+    screen.master.withdraw() #hides the window
+
+
+def show_screen(event): #shows the program (DOESN'T work yet)
+    print("you pressed control g")
+    screen.master.deiconify() #shows the window
+
+
 screen.pack()
 screen.master.bind('<Control-c>', quit)
+screen.master.bind('<Control-h>', show_screen) #doesn't work yet
+screen.master.bind('<Control-s>', hide_screen)
 screen.mainloop()
 
 
