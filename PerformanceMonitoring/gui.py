@@ -36,7 +36,7 @@ show_data('Process 3\n')
 
 def quit(event): #quits the program
     print("you pressed control c")
-    screen.master.quit()
+    screen.master.quit() #quits the program
 
 
 screen.pack()
