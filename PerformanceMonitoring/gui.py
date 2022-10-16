@@ -12,8 +12,8 @@ screen.master.geometry("+950+0")
 screen.master.lift()
 screen.master.wm_attributes("-topmost", True)
 screen.master.wm_attributes("-disabled", True)
-#screen.master.wm_attributes("-alpha", 0.8)
-screen.master.wm_attributes('-transparentcolor', 'white')
+#screen.master.wm_attributes("-alpha", 0.8) # don't need this, it makes the screen whitish and the letters hard to read
+screen.master.wm_attributes('-transparentcolor', 'white') #Makes the screen clear
 
 
 text = Text(screen, width=25, height=40)  # The best way to adjust the canvas screen space
@@ -34,7 +34,14 @@ show_data('Process 2\n')
 show_data('Process 3\n')
 
 
+def quit(event): #quits the program
+    print("you pressed control c")
+    screen.master.quit()
+
+
 screen.pack()
+screen.master.bind('<Control-c>', quit)
 screen.mainloop()
+
 
 

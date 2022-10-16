@@ -1,4 +1,6 @@
 import psutil
+
+from PerformanceMonitoring.gui import show_data
 from PerformanceMonitoring.process_data import ProcessData
 
 
@@ -33,7 +35,6 @@ class Processor:
 
                 # Store into temp object to be added to dictionary of current iteration.
                 temp = ProcessData(process_name, process_cpu, process_memory, process_score)
-
                 self.current_iteration_dict[process_id] = temp
 
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
@@ -43,10 +44,13 @@ class Processor:
         for key in self.process_dict:
             # If the key is in process_dict (last run) and not in current_iteration_dict, we know that the process
             # has dropped off.
+            show_data('line 48\n')
             if key not in self.current_iteration_dict:
+                show_data('line 48')
                 print("Process removed: ", self.process_dict[key].process_id, ":::",
                       self.process_dict[key].process_cpu, ":::",
                       self.process_dict[key].process_memory, ":::", self.process_dict[key].process_priority)
+
             else:
                 Processor.check_cpu_differences(self, key)
 
@@ -55,6 +59,7 @@ class Processor:
             # If the key is in current_iteration_dict (current run) and not in the last run dict then that means the
             # process has been added
             if key not in self.process_dict:
+                show_data('line 61')
                 print("Process added: ", self.current_iteration_dict[key].process_id, ":::",
                       self.current_iteration_dict[key].process_cpu, ":::",
                       self.current_iteration_dict[key].process_memory, ":::",
@@ -64,12 +69,14 @@ class Processor:
         if self.process_dict[key].process_cpu != 0 and self.current_iteration_dict[key].process_cpu != 0:
             # Since the key exists in both dicts, we can do comparisons of their resources used
             if self.process_dict[key].process_cpu > self.current_iteration_dict[key].process_cpu:
+                show_data('line 71')
                 print("Process ", key, " with name ", self.process_dict[key].process_id,
                       "decreased its CPU utilization by ",
                       (self.process_dict[key].process_cpu - self.current_iteration_dict[key].process_cpu) /
                       self.current_iteration_dict[key].process_cpu * 100,
                       "percent.")
             elif self.process_dict[key].process_cpu < self.current_iteration_dict[key].process_cpu:
+                show_data('line 78')
                 print("Process ", key, " with name ", self.process_dict[key].process_id,
                       "increased its CPU utilization by ",
                       (self.current_iteration_dict[key].process_cpu - self.process_dict[key].process_cpu) /
@@ -79,12 +86,14 @@ class Processor:
     def check_memory_differences(self, key):
         if self.process_dict[key].process_memory != 0 and self.current_iteration_dict[key].process_memory != 0:
             if self.process_dict[key].process_memory > self.current_iteration_dict[key].process_memory:
+                show_data('line 88')
                 print("Process ", key, " with name ", self.process_dict[key].process_id,
                       "decreased its memory utilization by ",
                       (self.process_dict[key].process_memory - self.current_iteration_dict[key].process_memory) /
                       self.current_iteration_dict[key].process_memory * 100,
                       "percent.")
             elif self.process_dict[key].process_memory < self.current_iteration_dict[key].process_memory:
+                show_data('line 95')
                 print("Process ", key, " with name ", self.process_dict[key].process_id,
                       "increased its memory utilization by ",
                       (self.current_iteration_dict[key].process_memory - self.process_dict[key].process_memory) /
