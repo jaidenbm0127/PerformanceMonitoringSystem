@@ -49,6 +49,7 @@ class Processor:
                       self.process_dict[key].process_memory, ":::", self.process_dict[key].process_priority)
             else:
                 Processor.check_cpu_differences(self, key)
+                Processor.check_memory_differences(self, key)
 
     def compare_current_iteration_to_last(self):
         for key in self.current_iteration_dict:
