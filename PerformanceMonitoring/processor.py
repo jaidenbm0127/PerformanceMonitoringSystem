@@ -1,4 +1,6 @@
 import psutil
+
+from PerformanceMonitoring.gui import show_data
 from PerformanceMonitoring.process_data import ProcessData
 
 
@@ -33,7 +35,6 @@ class Processor:
 
                 # Store into temp object to be added to dictionary of current iteration.
                 temp = ProcessData(process_name, process_cpu, process_memory, process_score)
-
                 self.current_iteration_dict[process_id] = temp
 
             except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
@@ -47,6 +48,7 @@ class Processor:
                 print("Process removed: ", self.process_dict[key].process_id, ":::",
                       self.process_dict[key].process_cpu, ":::",
                       self.process_dict[key].process_memory, ":::", self.process_dict[key].process_priority)
+
             else:
                 Processor.check_cpu_differences(self, key)
                 Processor.check_memory_differences(self, key)
