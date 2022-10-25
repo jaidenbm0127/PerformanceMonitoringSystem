@@ -26,9 +26,9 @@ class Processor:
         for proc in psutil.process_iter():
             try:
                 # Get process name, pid, cpu percent, memory percent, and priority.
-                process_name = proc.name()
                 process_id = proc.pid
-                process_cpu = proc.cpu_percent()
+                process_name = proc.name()
+                process_cpu = proc.cpu_percent(interval=None)
                 process_memory = proc.memory_percent()
                 process_score = proc.nice()
 
@@ -70,18 +70,20 @@ class Processor:
 
         if last_iter_cpu != 0 and current_iter_cpu != 0:
             # Since the key exists in both dicts, we can do comparisons of their resources used
-            if last_iter_cpu > current_iter_cpu:
+            if last_iter_cpu > current_iter_cpu > 100:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "decreased its CPU utilization by ",
                       hlp.calculate_percentage_difference
                       (last_iter_cpu, current_iter_cpu),
-                      "percent.")
-            elif last_iter_cpu < current_iter_cpu:
+                      "percent. It's current CPU usage is",
+                      current_iter_cpu)
+            elif last_iter_cpu < current_iter_cpu > 100:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "increased its CPU utilization by ",
                       hlp.calculate_percentage_difference
                       (current_iter_cpu, last_iter_cpu),
-                      "percent.")
+                      "percent. It's current CPU usage is",
+                      current_iter_cpu)
 
     def check_memory_differences(self, key):
 
@@ -89,18 +91,20 @@ class Processor:
         current_iter_mem = self.current_iteration_dict[key].process_memory
 
         if last_iter_mem != 0 and current_iter_mem != 0:
-            if last_iter_mem > current_iter_mem:
+            if last_iter_mem > current_iter_mem > 10:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "decreased its memory utilization by ",
                       hlp.calculate_percentage_difference
                       (last_iter_mem, current_iter_mem),
-                      "percent.")
-            elif last_iter_mem < self.current_iteration_dict[key].process_memory:
+                      "percent. It's current memory usage is",
+                      current_iter_mem)
+            elif last_iter_mem < self.current_iteration_dict[key].process_memory > 10:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "increased its memory utilization by ",
                       hlp.calculate_percentage_difference
                       (current_iter_mem, last_iter_mem),
-                      "percent.")
+                      "percent. It's current memory usage is",
+                      current_iter_mem)
 
     def check_empty_dict(self):
         return bool(self.last_iteration_dict)

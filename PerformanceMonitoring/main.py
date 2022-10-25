@@ -1,4 +1,3 @@
-from PerformanceMonitoring import gui
 from PerformanceMonitoring.processor import Processor
 
 
