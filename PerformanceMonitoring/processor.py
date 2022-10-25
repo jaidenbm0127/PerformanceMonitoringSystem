@@ -1,21 +1,22 @@
 import psutil
 from PerformanceMonitoring.process_data import ProcessData
+import helpers as hlp
 
 
 class Processor:
     current_iteration_dict = {}
-    process_dict = {}
+    last_iteration_dict = {}
 
     def process(self):
         Processor.get_processes(self)
         if not Processor.check_empty_dict(self):
-            self.process_dict = self.current_iteration_dict
+            self.last_iteration_dict = self.current_iteration_dict
             return
 
         Processor.compare_current_iteration_to_last(self)
         Processor.compare_last_iteration_to_current(self)
 
-        self.process_dict = self.current_iteration_dict
+        self.last_iteration_dict = self.current_iteration_dict
 
     def get_processes(self):
 
@@ -39,13 +40,14 @@ class Processor:
                 pass
 
     def compare_last_iteration_to_current(self):
-        for key in self.process_dict:
-            # If the key is in process_dict (last run) and not in current_iteration_dict, we know that the process
+        for key in self.last_iteration_dict:
+            # If the key is in the last run and not in current_iteration_dict, we know that the process
             # has dropped off.
             if key not in self.current_iteration_dict:
-                print("Process removed: ", self.process_dict[key].process_id, ":::",
-                      self.process_dict[key].process_cpu, ":::",
-                      self.process_dict[key].process_memory, ":::", self.process_dict[key].process_priority)
+                print("Process removed: ", self.last_iteration_dict[key].process_id, ":::",
+                      self.last_iteration_dict[key].process_cpu, ":::",
+                      self.last_iteration_dict[key].process_memory, ":::",
+                      self.last_iteration_dict[key].process_priority)
 
             else:
                 Processor.check_cpu_differences(self, key)
@@ -55,42 +57,50 @@ class Processor:
         for key in self.current_iteration_dict:
             # If the key is in current_iteration_dict (current run) and not in the last run dict then that means the
             # process has been added
-            if key not in self.process_dict:
+            if key not in self.last_iteration_dict:
                 print("Process added: ", self.current_iteration_dict[key].process_id, ":::",
                       self.current_iteration_dict[key].process_cpu, ":::",
                       self.current_iteration_dict[key].process_memory, ":::",
                       self.current_iteration_dict[key].process_priority)
 
     def check_cpu_differences(self, key):
-        if self.process_dict[key].process_cpu != 0 and self.current_iteration_dict[key].process_cpu != 0:
+
+        last_iter_cpu = self.last_iteration_dict[key].process_cpu
+        current_iter_cpu = self.current_iteration_dict[key].process_cpu
+
+        if last_iter_cpu != 0 and current_iter_cpu != 0:
             # Since the key exists in both dicts, we can do comparisons of their resources used
-            if self.process_dict[key].process_cpu > self.current_iteration_dict[key].process_cpu:
-                print("Process ", key, " with name ", self.process_dict[key].process_id,
+            if last_iter_cpu > current_iter_cpu:
+                print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "decreased its CPU utilization by ",
-                      (self.process_dict[key].process_cpu - self.current_iteration_dict[key].process_cpu) /
-                      self.current_iteration_dict[key].process_cpu * 100,
+                      hlp.calculate_percentage_difference
+                      (last_iter_cpu, current_iter_cpu),
                       "percent.")
-            elif self.process_dict[key].process_cpu < self.current_iteration_dict[key].process_cpu:
-                print("Process ", key, " with name ", self.process_dict[key].process_id,
+            elif last_iter_cpu < current_iter_cpu:
+                print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "increased its CPU utilization by ",
-                      (self.current_iteration_dict[key].process_cpu - self.process_dict[key].process_cpu) /
-                      self.process_dict[key].process_cpu * 100
-                      , "percent.")
+                      hlp.calculate_percentage_difference
+                      (current_iter_cpu, last_iter_cpu),
+                      "percent.")
 
     def check_memory_differences(self, key):
-        if self.process_dict[key].process_memory != 0 and self.current_iteration_dict[key].process_memory != 0:
-            if self.process_dict[key].process_memory > self.current_iteration_dict[key].process_memory:
-                print("Process ", key, " with name ", self.process_dict[key].process_id,
+
+        last_iter_mem = self.last_iteration_dict[key].process_memory
+        current_iter_mem = self.current_iteration_dict[key].process_memory
+
+        if last_iter_mem != 0 and current_iter_mem != 0:
+            if last_iter_mem > current_iter_mem:
+                print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "decreased its memory utilization by ",
-                      (self.process_dict[key].process_memory - self.current_iteration_dict[key].process_memory) /
-                      self.current_iteration_dict[key].process_memory * 100,
+                      hlp.calculate_percentage_difference
+                      (last_iter_mem, current_iter_mem),
                       "percent.")
-            elif self.process_dict[key].process_memory < self.current_iteration_dict[key].process_memory:
-                print("Process ", key, " with name ", self.process_dict[key].process_id,
+            elif last_iter_mem < self.current_iteration_dict[key].process_memory:
+                print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "increased its memory utilization by ",
-                      (self.current_iteration_dict[key].process_memory - self.process_dict[key].process_memory) /
-                      self.process_dict[key].process_memory * 100
-                      , "percent.")
+                      hlp.calculate_percentage_difference
+                      (current_iter_mem, last_iter_mem),
+                      "percent.")
 
     def check_empty_dict(self):
-        return bool(self.process_dict)
+        return bool(self.last_iteration_dict)
