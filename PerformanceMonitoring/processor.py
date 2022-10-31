@@ -65,19 +65,19 @@ class Processor:
 
     def check_cpu_differences(self, key):
 
-        last_iter_cpu = self.last_iteration_dict[key].process_cpu
-        current_iter_cpu = self.current_iteration_dict[key].process_cpu
+        last_iter_cpu = self.last_iteration_dict[key].process_cpu/psutil.cpu_count()
+        current_iter_cpu = self.current_iteration_dict[key].process_cpu/psutil.cpu_count()
 
         if last_iter_cpu != 0 and current_iter_cpu != 0:
             # Since the key exists in both dicts, we can do comparisons of their resources used
-            if last_iter_cpu > current_iter_cpu > 100:
+            if last_iter_cpu > current_iter_cpu > 5:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "decreased its CPU utilization by ",
                       hlp.calculate_percentage_difference
                       (last_iter_cpu, current_iter_cpu),
                       "percent. It's current CPU usage is",
                       current_iter_cpu)
-            elif last_iter_cpu < current_iter_cpu > 100:
+            elif last_iter_cpu < current_iter_cpu > 5:
                 print("Process ", key, " with name ", self.last_iteration_dict[key].process_id,
                       "increased its CPU utilization by ",
                       hlp.calculate_percentage_difference
