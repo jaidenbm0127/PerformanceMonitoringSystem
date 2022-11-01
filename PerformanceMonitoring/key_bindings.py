@@ -1,7 +1,6 @@
 from tkinter import NORMAL, Text, LEFT
 
 from prompt_toolkit.key_binding import KeyBindings
-from prompt_toolkit import prompt
 
 from PerformanceMonitoring.gui import screen
 
