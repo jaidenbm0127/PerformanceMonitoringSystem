@@ -80,47 +80,41 @@ class Processor:
         last_iter_cpu = self.last_iteration_cpu[key].process_cpu
         current_iter_cpu = self.current_iteration_cpu[key].process_cpu
 
-        if hlp.calculate_percentage_difference(last_iter_cpu, current_iter_cpu) > constants.CPU_PERCENTAGE_CHANGE_THRESHOLD:
+        if hlp.calculate_percentage_difference(last_iter_cpu,
+                                               current_iter_cpu) > constants.CPU_PERCENTAGE_CHANGE_THRESHOLD:
             # Since the key exists in both dicts, we can do comparisons of their resources used
             if last_iter_cpu > current_iter_cpu:
-                print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
-                      "decreased its CPU utilization by",
-                      hlp.calculate_percentage_difference
-                      (last_iter_cpu, current_iter_cpu),
-                      "percent. It's current CPU usage is",
-                      round(current_iter_cpu, 2),
-                      "percent.")
+                print(constants.CPU_DECREASED_UTILIZATION_MSG.format(key, self.last_iteration_cpu[key].process_id,
+                                                                     hlp.calculate_percentage_difference
+                                                                     (current_iter_cpu, last_iter_cpu),
+                                                                     round(current_iter_cpu, 2)
+                                                                     ))
             elif last_iter_cpu < current_iter_cpu:
-                print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
-                      "increased its CPU utilization by",
-                      hlp.calculate_percentage_difference
-                      (current_iter_cpu, last_iter_cpu),
-                      "percent. It's current CPU usage is",
-                      round(current_iter_cpu, 2),
-                      "percent.")
+                print(constants.CPU_INCREASED_UTILIZATION_MSG.format(key, self.last_iteration_cpu[key].process_id,
+                                                                     hlp.calculate_percentage_difference
+                                                                     (current_iter_cpu, last_iter_cpu),
+                                                                     round(current_iter_cpu, 2)
+                                                                     ))
 
     def check_memory_differences(self, key):
 
         last_iter_mem = self.last_iteration_cpu[key].process_memory
         current_iter_mem = self.current_iteration_cpu[key].process_memory
 
-        if hlp.calculate_percentage_difference(last_iter_mem, current_iter_mem) > constants.MEMORY_PERCENTAGE_CHANGE_THRESHOLD:
+        if hlp.calculate_percentage_difference(last_iter_mem,
+                                               current_iter_mem) > constants.MEMORY_PERCENTAGE_CHANGE_THRESHOLD:
             if last_iter_mem > current_iter_mem:
-                print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
-                      "decreased its memory utilization by",
-                      hlp.calculate_percentage_difference
-                      (last_iter_mem, current_iter_mem),
-                      "percent. It's current memory usage is",
-                      round(current_iter_mem, 2),
-                      "percent.")
+                print(constants.MEMORY_DECREASED_UTILIZATION_MSG.format(key, self.last_iteration_cpu[key].process_id,
+                                                                        hlp.calculate_percentage_difference
+                                                                        (current_iter_mem, last_iter_mem),
+                                                                        round(current_iter_mem, 2)
+                                                                        ))
             elif last_iter_mem < current_iter_mem:
-                print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
-                      "increased its memory utilization by",
-                      hlp.calculate_percentage_difference
-                      (current_iter_mem, last_iter_mem),
-                      "percent. It's current memory usage is",
-                      round(current_iter_mem, 2),
-                      "percent.")
+                print(constants.MEMORY_INCREASED_UTILIZATION_MSG.format(key, self.last_iteration_cpu[key].process_id,
+                                                                        hlp.calculate_percentage_difference
+                                                                        (current_iter_mem, last_iter_mem),
+                                                                        round(current_iter_mem, 2)
+                                                                        ))
 
     def check_gpu_utilization(self):
 
@@ -134,20 +128,14 @@ class Processor:
                     hlp.calculate_percentage_difference(current_gpu_utilization, self.gpu_utilization) > \
                     constants.GPU_PERCENTAGE_CHANGE_THRESHOLD:
                 if current_gpu_utilization > self.gpu_utilization:
-                    print("GPU utilization has increased by",
-                          hlp.calculate_percentage_difference
-                          (current_gpu_utilization, self.gpu_utilization),
-                          "percent. It's current utilization is",
-                          round(current_gpu_utilization, 2),
-                          "percent."
-                          )
+                    print(constants.MEMORY_DECREASED_UTILIZATION_MSG.format(hlp.calculate_percentage_difference
+                                                                          (self.gpu_utilization, current_gpu_utilization),
+                                                                          round(current_gpu_utilization, 2)
+                                                                          ))
                 else:
-                    print("GPU utilization has decreased by",
-                          hlp.calculate_percentage_difference
-                          (self.gpu_utilization, current_gpu_utilization),
-                          "percent. It's current utilization is",
-                          round(current_gpu_utilization, 2),
-                          " percent."
-                          )
+                    print(constants.MEMORY_INCREASED_UTILIZATION_MSG.format(hlp.calculate_percentage_difference
+                                                                          (self.gpu_utilization, current_gpu_utilization),
+                                                                          round(current_gpu_utilization, 2)
+                                                                          ))
 
         self.gpu_utilization = current_gpu_utilization
