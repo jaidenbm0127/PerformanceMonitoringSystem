@@ -132,7 +132,7 @@ class Processor:
                           (hlp.calculate_percentage_difference
                            (self.gpu_utilization, current_gpu_utilization),
                            round(current_gpu_utilization, 2)
-                    ))
+                           ))
                 else:
                     print(constants.GPU_INCREASED_UTILIZATION_MSG.format(
                         hlp.calculate_percentage_difference(self.gpu_utilization, current_gpu_utilization),
