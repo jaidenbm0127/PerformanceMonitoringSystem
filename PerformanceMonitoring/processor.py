@@ -1,6 +1,7 @@
 import psutil
 import GPUtil
 import helpers as hlp
+import constants
 from PerformanceMonitoring.process_data import ProcessData
 
 
@@ -34,10 +35,10 @@ class Processor:
             try:
                 cur_cpu_percent = round(proc.cpu_percent(interval=None) / psutil.cpu_count(), 2)
                 cur_mem_percent = round(proc.memory_percent(), 2)
-                if cur_cpu_percent > 5.0 and cur_mem_percent > 5.0:
+                if cur_cpu_percent > constants.CPU_THRESHOLD and cur_mem_percent > constants.MEMORY_THRESHOLD:
                     # Get process name, pid, cpu percent, memory percent, and priority.
-                    process_id = proc.pid
                     process_name = proc.name()
+                    process_id = proc.pid
                     process_cpu = cur_cpu_percent
                     process_memory = cur_mem_percent
                     process_score = proc.nice()
@@ -54,10 +55,11 @@ class Processor:
             # If the key is in the last run and not in current_iteration_dict, we know that the process
             # has dropped off.
             if key not in self.current_iteration_cpu:
-                print("Process removed: ", self.last_iteration_cpu[key].process_id, ":::",
-                      self.last_iteration_cpu[key].process_cpu, ":::",
-                      self.last_iteration_cpu[key].process_memory, ":::",
-                      self.last_iteration_cpu[key].process_priority)
+                if self.last_iteration_cpu[key].process_id != "pycharm64.exe":
+                    print("Process removed: ", self.last_iteration_cpu[key].process_id, ":::",
+                          self.last_iteration_cpu[key].process_cpu, ":::",
+                          self.last_iteration_cpu[key].process_memory, ":::",
+                          self.last_iteration_cpu[key].process_priority)
 
             else:
                 Processor.check_cpu_differences(self, key)
@@ -78,7 +80,7 @@ class Processor:
         last_iter_cpu = self.last_iteration_cpu[key].process_cpu
         current_iter_cpu = self.current_iteration_cpu[key].process_cpu
 
-        if hlp.calculate_percentage_difference(last_iter_cpu, current_iter_cpu) > 100:
+        if hlp.calculate_percentage_difference(last_iter_cpu, current_iter_cpu) > constants.CPU_PERCENTAGE_CHANGE_THRESHOLD:
             # Since the key exists in both dicts, we can do comparisons of their resources used
             if last_iter_cpu > current_iter_cpu:
                 print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
@@ -102,7 +104,7 @@ class Processor:
         last_iter_mem = self.last_iteration_cpu[key].process_memory
         current_iter_mem = self.current_iteration_cpu[key].process_memory
 
-        if hlp.calculate_percentage_difference(last_iter_mem, current_iter_mem):
+        if hlp.calculate_percentage_difference(last_iter_mem, current_iter_mem) > constants.MEMORY_PERCENTAGE_CHANGE_THRESHOLD:
             if last_iter_mem > current_iter_mem:
                 print("Process", key, "with name", self.last_iteration_cpu[key].process_id,
                       "decreased its memory utilization by",
@@ -128,24 +130,24 @@ class Processor:
             self.gpu_utilization = current_gpu_utilization
             return
         else:
-            if current_gpu_utilization != 0 and self.gpu_utilization != 0:
+            if current_gpu_utilization != 0 and self.gpu_utilization != 0 and \
+                    hlp.calculate_percentage_difference(current_gpu_utilization, self.gpu_utilization) > \
+                    constants.GPU_PERCENTAGE_CHANGE_THRESHOLD:
                 if current_gpu_utilization > self.gpu_utilization:
-                    if hlp.calculate_percentage_difference(current_gpu_utilization, self.gpu_utilization) > 100:
-                        print("GPU utilization has increased by",
-                              hlp.calculate_percentage_difference
-                              (current_gpu_utilization, self.gpu_utilization),
-                              "percent. It's current utilization is",
-                              round(current_gpu_utilization, 2),
-                              "percent."
-                              )
-                elif current_gpu_utilization < self.gpu_utilization:
-                    if hlp.calculate_percentage_difference(self.gpu_utilization, current_gpu_utilization) > 100:
-                        print("GPU utilization has decreased by",
-                              hlp.calculate_percentage_difference
-                              (self.gpu_utilization, current_gpu_utilization),
-                              "percent. It's current utilization is",
-                              round(current_gpu_utilization, 2),
-                              " percent."
-                              )
+                    print("GPU utilization has increased by",
+                          hlp.calculate_percentage_difference
+                          (current_gpu_utilization, self.gpu_utilization),
+                          "percent. It's current utilization is",
+                          round(current_gpu_utilization, 2),
+                          "percent."
+                          )
+                else:
+                    print("GPU utilization has decreased by",
+                          hlp.calculate_percentage_difference
+                          (self.gpu_utilization, current_gpu_utilization),
+                          "percent. It's current utilization is",
+                          round(current_gpu_utilization, 2),
+                          " percent."
+                          )
 
         self.gpu_utilization = current_gpu_utilization
