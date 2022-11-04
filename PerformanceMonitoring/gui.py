@@ -1,21 +1,22 @@
 import tkinter
+import ctypes
 from tkinter import *
 
+ctypes.windll.shcore.SetProcessDpiAwareness(1) #makes the font sharper
 
 class showData:
-    screen = tkinter.Canvas(width=50, height=50, highlightthickness=0)
+    screen = tkinter.Canvas(width=145, height=650, highlightthickness=0)
     screen.master.overrideredirect(True)
-    # screen.master.geometry("+950+0")  # moving screen to right side of screen
     screen.master.lift()
     screen.master.wm_attributes("-topmost", True)
     screen.master.wm_attributes("-disabled", True)
     screen.master.wm_attributes('-transparentcolor', 'white')  # Makes the screen clear
 
 
-    text = Text(screen, width=115, height=40)  # The best way to adjust the canvas screen space
+    text = Text(screen, width=145, height=40)  # The best way to adjust the canvas screen space
     text.tag_configure("tag_name", justify='right')
     text.pack()
-    text.insert('1.0', 'This is a test ')
+    text.insert('1.0', 'This is a test on how to make tkinter text to appear on the right side only if it not on the right thannn but than coool things happen and its so much fun right? noooooooooo things are not allways fun duhhh because it things and things. get ittttttt hahahahha ')
     Font_tuple = ("Times new roman", 13, "bold")  # Can adjust the font configuration
     text.configure(font=Font_tuple)
 
