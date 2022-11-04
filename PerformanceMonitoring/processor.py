@@ -128,14 +128,15 @@ class Processor:
                     hlp.calculate_percentage_difference(current_gpu_utilization, self.gpu_utilization) > \
                     constants.GPU_PERCENTAGE_CHANGE_THRESHOLD:
                 if current_gpu_utilization > self.gpu_utilization:
-                    print(constants.MEMORY_DECREASED_UTILIZATION_MSG.format(hlp.calculate_percentage_difference
-                                                                          (self.gpu_utilization, current_gpu_utilization),
-                                                                          round(current_gpu_utilization, 2)
-                                                                          ))
+                    print(constants.GPU_DECREASED_UTILIZATION_MSG.format
+                          (hlp.calculate_percentage_difference
+                           (self.gpu_utilization, current_gpu_utilization),
+                           round(current_gpu_utilization, 2)
+                    ))
                 else:
-                    print(constants.MEMORY_INCREASED_UTILIZATION_MSG.format(hlp.calculate_percentage_difference
-                                                                          (self.gpu_utilization, current_gpu_utilization),
-                                                                          round(current_gpu_utilization, 2)
-                                                                          ))
+                    print(constants.GPU_INCREASED_UTILIZATION_MSG.format(
+                        hlp.calculate_percentage_difference(self.gpu_utilization, current_gpu_utilization),
+                        round(current_gpu_utilization, 2)
+                    ))
 
         self.gpu_utilization = current_gpu_utilization
