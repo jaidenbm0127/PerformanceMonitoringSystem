@@ -26,8 +26,6 @@ class showData:
         return data
 
     dataframe1 = pd.read_excel('Data.xlsx')
-
-    print(dataframe1)
     show_data(dataframe1)
 
     screen.pack()
