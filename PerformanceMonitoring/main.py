@@ -6,7 +6,7 @@ def main():
     # Loop to keep  the collection of processes continuing.
 
     x = 0
-    while x < 500:
+    while x < 200:
         proc.process()
         x += 1
 
