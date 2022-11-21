@@ -194,8 +194,8 @@ class Processor:
                         round(current_gpu_utilization, 2)
                     ))
 
+                self.row += 1
         self.gpu_utilization = current_gpu_utilization
-        self.row += 1
 
     def save(self):
 
