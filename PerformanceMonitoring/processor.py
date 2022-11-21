@@ -75,10 +75,10 @@ class Processor:
             # has dropped off.
             if key not in self.current_iteration_cpu:
                 # Keep pycharm from popping up a notification every time a new worker is made for the program.
-                print(constants.PROCESS_REMOVED_MSG(self.last_iteration_cpu[key].process_id,
-                                                    self.last_iteration_cpu[key].process_cpu,
-                                                    self.last_iteration_cpu[key].process_memory,
-                                                    self.last_iteration_cpu[key].process_priority))
+                print(constants.PROCESS_REMOVED_MSG.format(self.last_iteration_cpu[key].process_id,
+                                                           self.last_iteration_cpu[key].process_cpu,
+                                                           self.last_iteration_cpu[key].process_memory,
+                                                           self.last_iteration_cpu[key].process_priority))
             # If the key is in both dictionaries, that means that the process is in both dictionaries and thus,
             # still exists, and they need to be compared between runs.
             else:
@@ -90,10 +90,10 @@ class Processor:
             # If the key is in current_iteration_dict (current run) and not in the last run dict then that means the
             # process has been added
             if key not in self.last_iteration_cpu:
-                print(constants.PROCESS_ADDED_MSG(self.current_iteration_cpu[key].process_id,
-                                                  self.current_iteration_cpu[key].process_cpu,
-                                                  self.current_iteration_cpu[key].process_memory,
-                                                  self.current_iteration_cpu[key].process_priority))
+                print(constants.PROCESS_ADDED_MSG.format(self.current_iteration_cpu[key].process_id,
+                                                         self.current_iteration_cpu[key].process_cpu,
+                                                         self.current_iteration_cpu[key].process_memory,
+                                                         self.current_iteration_cpu[key].process_priority))
 
     # Takes a key and compares the cpu utilization differences for that processes between last run and this run.
     def check_cpu_differences(self, key):
