@@ -7,9 +7,11 @@ def main():
 
     x = 0
     while x < 500:
-
         proc.process()
         x += 1
+
+    proc.save()
+
 
 if __name__ == '__main__':
     main()
